@@ -4,29 +4,10 @@ body, html { /* set size of body to full page and remove margins */
     height: 100%;
     padding: 0;
     margin: 0;
+    font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif;
+    font-size: 12px;
 }
 
-#show-div{
-    width: 1000px;
-    height: 800px;
-}
-
-
-#scratch-div{
-    width: 100%;
-    height: 100%;
-    float: left;
-}
-
-#view-scratch-div{
-    width: 100%;
-    height: 100%;
-}
-
-#make-scratch-div{
-    width: 100%;
-    height: 100%;
-}
 
 #canvas-div{
     width: 99%;
@@ -43,22 +24,9 @@ div.ui-input-text {
     margin-right: 10px;
 }
 
-.ui-progressbar {
-    position: relative;
-}
-.progress-label {
-    position: absolute;
-    left: 50%;
-    top: 4px;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 #fff;
-}
-
-#actors-number{
+#objects-spinner{
     width: 50px;
 }
-
-
 
 .ui-icon-rect{
     background-image: url(images/icons/rect.png) !important;    
@@ -100,12 +68,40 @@ div.ui-input-text {
 
 
 .cpicker{
-    width: 150px !important;
-    height: 30px;
+    width: 100px !important;
+    height: 40px;
     border: thin solid;
     cursor: pointer;
+    background-color: white;
+    margint: 5px;
 }
 
 .option-row{
     margin: 10px;
+}
+
+
+#basic-buttons-div{
+    float: right;
+}
+
+#shapes-control-div{
+    float: left;
+}
+
+#toolbar{
+    
+}
+
+#main-div{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.numeric-input{
+    width: 40px;
+}
+
+.slider{
+    margin: 3 !important;
 }
