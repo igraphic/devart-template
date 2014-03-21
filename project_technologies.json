@@ -4,13 +4,13 @@
             "insert apis"
         ],
         "platforms": [
-            "insert platforms"
+            "Google Compute Engine","Web"
         ],
         "toolkits": [
-            "insert toolkits"
+            "jquery","jquery ui","fabricjs"
         ]
     },
     "themes": [
-        "insert themes"
+        "Random","Shapes","Background","Canvas"
     ]
 }

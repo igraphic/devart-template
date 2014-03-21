@@ -1,5 +1,4 @@
-# Project Title
-Happy Shapes :)
+# Happy Shapes :)
 
 ## Authors
 - Tyseer Mohamed, https://github.com/igraphic
