@@ -9,6 +9,8 @@ It's a simple web application to generate beautiful backgrounds based on the bas
 
 ## Link to Prototype
 
+[Happy shapes](http://happy-shapes.appspot.com/ "Happy shapes")
+
 ## Example Code
 ```
 //Setting the default profile
