@@ -1,0 +1,111 @@
+
+body, html { /* set size of body to full page and remove margins */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#show-div{
+    width: 1000px;
+    height: 800px;
+}
+
+
+#scratch-div{
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+
+#view-scratch-div{
+    width: 100%;
+    height: 100%;
+}
+
+#make-scratch-div{
+    width: 100%;
+    height: 100%;
+}
+
+#canvas-div{
+    width: 99%;
+    height: 95%;
+    margin: 5px;
+    background-color: #ccc;    
+    width: 100%;
+    overflow: scroll;
+}
+
+div.ui-input-text {
+    width: 50px !important;
+    float: right;
+    margin-right: 10px;
+}
+
+.ui-progressbar {
+    position: relative;
+}
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+#actors-number{
+    width: 50px;
+}
+
+
+
+.ui-icon-rect{
+    background-image: url(images/icons/rect.png) !important;    
+}
+
+.ui-icon-square{
+    background-image: url(images/icons/square.png) !important;    
+}
+.ui-icon-circle{
+    background-image: url(images/icons/circle.png) !important;    
+}
+.ui-icon-triangle{
+    background-image: url(images/icons/triangle.png) !important;    
+}
+.ui-icon-hexagon{
+    background-image: url(images/icons/hexagon.png) !important;    
+}
+.ui-icon-octagon{
+    background-image: url(images/icons/octagon.png) !important;    
+}
+
+.ui-icon-download{
+    background-image: url(images/icons/download.png) !important;    
+}
+
+.ui-icon-clear{
+    background-image: url(images/icons/clear.png) !important;    
+}
+
+.range-setter{
+    width: 220px;
+    cursor: pointer;
+}
+
+.colorpicker{
+    z-index: 200;
+    cursor: pointer  !important;
+}
+
+
+.cpicker{
+    width: 150px !important;
+    height: 30px;
+    border: thin solid;
+    cursor: pointer;
+}
+
+.option-row{
+    margin: 10px;
+}

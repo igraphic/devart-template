@@ -1,0 +1,74 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Happy Shapes (beta)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <link type="text/css" rel="stylesheet" href="css/smoothness/jquery-ui-1.10.4.custom.min.css">
+        <link type="text/css" rel="stylesheet" href="css/color-picker/css/colorpicker.css">
+        <link type="text/css" rel="stylesheet" href="css/main.css">
+
+        <script type="text/javascript" src="js/lib/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="js/lib/fabric.min.js"></script>
+        <script type="text/javascript" src="js/lib/colorpicker.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+    </head>
+    <body>
+        <div id="main-div">    
+            <div id="toolbar" class="ui-widget-header ui-corner-all">
+                <button id="clear-button" onclick="clearCanvas();">Clear</button>
+                <button id="download-button" onclick="save();">Download</button>
+                <button id="options-button">Options</button>
+
+
+                <span id="shapes-div">
+                    <input type="checkbox" checked="checked" id="shape-0"><label for="shape-0">Circle</label>
+                    <input type="checkbox" checked="checked" id="shape-2"><label for="shape-2">Square</label>
+                    <input type="checkbox" checked="checked" id="shape-4"><label for="shape-4">Rectangle</label>                
+                    <input type="checkbox" checked="checked" id="shape-3"><label for="shape-3">Triangle</label>
+                    <input type="checkbox" checked="checked" id="shape-6"><label for="shape-6">Hexagon</label>
+                    <input type="checkbox" checked="checked" id="shape-8"><label for="shape-8">Octagon</label>
+
+                </span>
+                <input type="text" id="actors-number" value="100" />
+                <button id="go-button" onclick="showtime();">Go!</button>
+                <span id="progress-span"></span>            
+
+                <div id="options-dialog" title="Options">
+                    <fieldset  title="Canvas">
+                        <div class="option-row">
+                            <span>
+                                Background Color: 
+                            </span>
+                            <span title="Change background color" class="cpicker" id="bg-picker">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </div>                        
+                        <div class="option-row">
+                            <span>
+                               Shapes Size Range: 
+                            </span>
+                            <span class="" id="size-setter"></span>
+                        </div>                         
+                        <div id="size-slider"></div>                        
+                        
+                    </fieldset>
+
+                </div>
+
+            </div>
+
+            <div id="canvas-div">
+                <canvas width="1200" height="500" id="scratch-canvas"></canvas>
+            </div>
+
+            <div id="hidden-div" style="display:none">
+                <textarea id="log-view" rows="10" cols="100"></textarea>
+            </div>
+        </div>
+    </body>
+</html>
