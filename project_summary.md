@@ -1,5 +1,5 @@
-# Happy Shapes :)
-
+# Happy Shapes
+Happy Shapes
 ## Authors
 - Tyseer Mohamed, https://github.com/igraphic
 
