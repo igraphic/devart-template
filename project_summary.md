@@ -10,12 +10,6 @@ It's a simple web application to generate beautiful backgrounds based on the bas
 
 [Happy shapes](http://happy-shapes.appspot.com/ "Happy shapes")
 
-## ♥
-
-- Google
-- fabricjs
-- 
-
 ## Example Code
 ```
 //Setting the default profile
