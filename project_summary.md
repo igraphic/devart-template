@@ -10,6 +10,12 @@ It's a simple web application to generate beautiful backgrounds based on the bas
 
 [Happy shapes](http://happy-shapes.appspot.com/ "Happy shapes")
 
+## ♥
+
+- Google
+- fabricjs
+- 
+
 ## Example Code
 ```
 //Setting the default profile
@@ -18,6 +24,16 @@ var dp = {maxSize: 30, minSize: 5, shapes: [0,2,3,4,6,8], angle: "never", fill: 
 ## Links to External Libraries
 
 [Fabric.js](http://fabricjs.com/ "http://fabricjs.com/")
+
+## ♥
+
+- google
+- fabricjs
+- jquery
+- wikipedia
+- stackoverflow
+- w3schools
+- copy & paste
 
 ## Images & Videos
 
