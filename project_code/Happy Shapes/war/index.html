@@ -23,7 +23,7 @@ and open the template in the editor.
         <div id="main-div">    
             <div id="toolbar" class="ui-widget-header">
                 <div id="shapes-control-div">
-
+                    <button id="options-button">Options</button>
                     <span id="shapes-div">
                         <input type="checkbox" checked="checked" id="shape-0"><label for="shape-0">Circle</label>
                         <input type="checkbox" checked="checked" id="shape-2"><label for="shape-2">Square</label>
@@ -38,14 +38,36 @@ and open the template in the editor.
                     <label for="objects-spinner">Number of Objects:</label>
                     <input class="numeric-input" id="objects-spinner" name="objects-spinner" value="100">
                     <button id="go-button" onclick="showtime();">Go!</button>
+                    <button id="stop-button" style="display: none" onclick="showtime();">Stop!</button>
                     <button id="test-button" style="display: none" onclick="test();">test</button>
                     <span id="progress-span"></span>            
+
                 </div>
                 <div id="basic-buttons-div">
+                    <button id="chrome-button" title="Tested on google chrome!" onclick="window.open('https://www.google.com/intl/en/chrome/browser/', '_blank');">Chrome</button>
+                    <button id="feedback-button">feedback</button>
                     <button id="download-button" onclick="save();">Download</button>
-                    <button id="options-button">Options</button>
+                    
                     <button id="clear-button" onclick="clearCanvas();">Clear</button>
 
+                </div>
+                <div id="feedback-form" title="Your feedback">
+                    <form>
+                        <fieldset>
+                            <div>
+                                <label for="feedback-name">Name</label><br/>
+                                <input type="text" name="name" id="feedback-name" class="text ui-widget-content ui-corner-all">
+                            </div>
+                            <div>
+                                <label for="feedback-email">Email</label><br/>
+                                <input type="text" name="email" id="feedback-email" value="" class="text ui-widget-content ui-corner-all">
+                            </div>
+                            <div>
+                                <label for="feedback-comment">Comment</label><br/>
+                                <textarea name="text" cols="50" id="feedback-comment"  class="text ui-widget-content ui-corner-all"></textarea>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
                 <div id="options-dialog" title="Options">
                     <p>Canvas</p>
@@ -137,7 +159,7 @@ and open the template in the editor.
                                     </span>
                                 </td>
                             </tr>
-                            
+
                             <tr>
                                 <td colspan="2">
                                     <span  class="option-label" id="opacity-label">

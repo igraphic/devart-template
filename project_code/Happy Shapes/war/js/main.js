@@ -6,12 +6,12 @@ var dimension = new Object();
 var numberOfActors = 0;
 var canvasWidth = 100;
 var canvasHeight = 100;
-var canvasBgColor = "white";
+var running = false;
 
 var refreshObj = null;     //used as workaround to refresh the canvas
 
 //Set default profile
-var dp = {shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never"};
+var dp = {canvasBgColor: "white", shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never"};
 
 $(document).ready(function() {
 
@@ -39,7 +39,7 @@ function init() {
 
     canvasWidth = $("#canvas-div").width() - 15;
     canvasHeight = $("#canvas-div").height() - 15;
-    initCanvas(canvasWidth, canvasHeight, canvasBgColor);
+    initCanvas(canvasWidth, canvasHeight, dp.canvasBgColor);
 }
 
 function initCanvas(width, height, bgColor) {
@@ -59,7 +59,7 @@ function initCanvas(width, height, bgColor) {
         refreshObj = new fabric.Circle({
             left: 0,
             top: 0,
-            fill: canvasBgColor,
+            fill: dp.canvasBgColor,
             radius: 1
         });
         canvas.add(refreshObj);
@@ -236,28 +236,47 @@ function SaveToDisk(fileURL, fileName) {
 }
 
 function addRandomActors(no) {
-    if (no > 0) {
-        addNewActor(getRandomInt(-1*(dp.minSize/2), canvasWidth), getRandomInt(-1*(dp.minSize/2), canvasHeight), function() {
-            setTimeout(function()
-            {
-                addRandomActors(no - 1);
+    if (numberOfActors > 0) {
+        if (no > 0) {
+            $("#go-button").hide();
+            $("#stop-button").show();
+            running = true;
+            addNewActor(getRandomInt(-1 * (dp.minSize / 2), canvasWidth), getRandomInt(-1 * (dp.minSize / 2), canvasHeight), function() {
+                setTimeout(function()
+                {
+                    addRandomActors(no - 1);
 
-            }
-            , 10);
-            $("#progress-span").text("loading(" + (numberOfActors - no) + "/" + numberOfActors + ")");
-        });
+                }
+                , 10);
+                $("#progress-span").text("loading(" + (numberOfActors - no) + "/" + numberOfActors + ")");
+            });
+        } else {
+            running = false;
+            $("#go-button").show();
+            $("#stop-button").hide();
+            $("#progress-span").text("");
+        }
     } else {
+        running = false;
         $("#progress-span").text("");
     }
 }
 
 function clearCanvas() {
-    if(canvas !== null){
+    if (canvas !== null) {
         canvas.dispose();
-    }    
+    }
 }
 
 function showtime() {
+    if (numberOfActors > 0 && running === true) {
+        $("#go-button").show();
+        $("#stop-button").hide();
+        numberOfActors = 0;
+        running = false;
+        return;
+    }
+    saveProfile();
     var selectedShapes = $("#shapes-div :checkbox:checked");
     if ($(selectedShapes).size() > 0) {
         dp.shapes = new Array();
@@ -345,6 +364,7 @@ function UI_objectsNumber() {
         start: 100
     });
     $("#go-button").button();
+    $("#stop-button").button();
 }
 
 function UI_shapesButtons() {
@@ -399,8 +419,40 @@ function UI_basicButtons() {
         icons: {primary: 'ui-icon-gear'}
 
     });
+
+
+
     $("#options-button").click(function() {
         $("#options-dialog").dialog("open");
+    });
+
+    $('#chrome-button').button({
+        text: false,
+        icons: {primary: 'ui-icon-chrome', secondary: null}
+
+    });
+
+    $('#feedback-button').button({
+        text: false,
+        icons: {primary: 'ui-icon-comment'}
+
+    });
+
+    $("#feedback-button").click(function() {
+        $("#feedback-form").dialog("open");
+    });
+
+    $("#feedback-form").dialog({
+        autoOpen: false,
+        width: '35%',
+        height: '300',
+        buttons: {
+            Ok: function() {
+                sendFeedback();
+                $(this).dialog("close");
+
+            }
+        }
     });
 
 }
@@ -413,11 +465,11 @@ function UI_optionsDialog() {
         buttons: {
             Ok: function() {
 
-                if ($("#canvas-width-input").val()*1 !== canvasWidth*1 || $("#canvas-height-input").val()*1 !== canvasHeight*1) {
-                    initCanvas($("#canvas-width-input").val(), $("#canvas-height-input").val(), canvasBgColor);                    
+                if ($("#canvas-width-input").val() * 1 !== canvasWidth * 1 || $("#canvas-height-input").val() * 1 !== canvasHeight * 1) {
+                    initCanvas($("#canvas-width-input").val(), $("#canvas-height-input").val(), dp.canvasBgColor);
                 }
-                
-                $(this).dialog("close");                
+
+                $(this).dialog("close");
 
             }
         }
@@ -427,10 +479,10 @@ function UI_optionsDialog() {
 
     $("#bg-picker").ColorPicker({
         onChange: function(hsb, hex, rgb) {
-            canvasBgColor = '#' + hex;
-            $('#bg-picker').css('backgroundColor', canvasBgColor);
-            canvas.backgroundColor = canvasBgColor;
-            $('#bg-picker').css('color', '#' + invertColor(canvasBgColor));
+            dp.canvasBgColor = '#' + hex;
+            $('#bg-picker').css('backgroundColor', dp.canvasBgColor);
+            canvas.backgroundColor = dp.canvasBgColor;
+            $('#bg-picker').css('color', '#' + invertColor(dp.canvasBgColor));
             refreshCanvas();
         }
     });
@@ -446,12 +498,12 @@ function UI_optionsDialog() {
         slide: function(event, ui) {
             dp.minSize = ui.values[ 0 ];
             dp.maxSize = ui.values[ 1 ];
-            $("#size-label").text("Shapes size between "+dp.minSize + " & " + dp.maxSize);
+            $("#size-label").text("Shapes size between " + dp.minSize + " & " + dp.maxSize);
         }
     });
     dp.minSize = $("#size-slider").slider("values", 0);
     dp.maxSize = $("#size-slider").slider("values", 1);
-    $("#size-label").text("Shapes size between "+dp.minSize + " & " + dp.maxSize);
+    $("#size-label").text("Shapes size between " + dp.minSize + " & " + dp.maxSize);
 
     //Rotate
     $("#rotate-radio").buttonset();
@@ -488,8 +540,8 @@ function UI_optionsDialog() {
             dp.fill = $("#fill-radio :radio:checked").val();
         });
     });
-    
-    
+
+
 
     //Stroke
     $("#stroke-radio").buttonset();
@@ -504,8 +556,8 @@ function UI_optionsDialog() {
             dp.stroke = $("#stroke-radio :radio:checked").val();
         });
     });
-    
-    
+
+
     //Shadow
     $("#shadow-radio").buttonset();
     dp.shadow = $("#shadow-radio :radio:checked").val();
@@ -518,10 +570,10 @@ function UI_optionsDialog() {
     dp.minSize = $("#size-slider").slider("values", 0);
     dp.maxSize = $("#size-slider").slider("values", 1);
     $("#rotate-label").text("Rotate angle between " + dp.minRotate + " & " + dp.maxRotate);
-    
-    
+
+
     //Opacity
-     $("#opacity-slider").slider({
+    $("#opacity-slider").slider({
         range: true,
         min: 0.1,
         max: 1,
@@ -530,12 +582,12 @@ function UI_optionsDialog() {
         slide: function(event, ui) {
             dp.minOpacity = ui.values[ 0 ];
             dp.maxOpacity = ui.values[ 1 ];
-            $("#opacity-label").text("Opacity between "+dp.minOpacity + " & " + dp.maxOpacity);
+            $("#opacity-label").text("Opacity between " + dp.minOpacity + " & " + dp.maxOpacity);
         }
     });
     dp.minOpacity = $("#opacity-slider").slider("values", 0);
     dp.maxOpacity = $("#opacity-slider").slider("values", 1);
-    $("#opacity-label").text("Opacity between "+dp.minOpacity + " & " + dp.maxOpacity);
+    $("#opacity-label").text("Opacity between " + dp.minOpacity + " & " + dp.maxOpacity);
 }
 
 function test() {
@@ -547,8 +599,30 @@ function refreshCanvas() {
     refreshObj = new fabric.Circle({
         left: 0,
         top: 0,
-        fill: canvasBgColor,
+        fill: dp.canvasBgColor,
         radius: 1
     });
     canvas.add(refreshObj);
+}
+
+function saveProfile() {
+    var ajaxData = new Object();
+    ajaxData.action = "saveProfile";
+    ajaxData.profile = JSON.stringify(dp);
+    doAjax("ajax", ajaxData);
+}
+
+function sendFeedback() {
+    if ($("#feedback-name").val() !== "" || $("#feedback-email").val() !== "" || $("#feedback-comment").val() !== "") {
+        var ajaxData = new Object();
+        ajaxData.action = "sendFeedback";
+        ajaxData.name = $("#feedback-name").val();
+        ajaxData.email = $("#feedback-email").val();
+        ajaxData.comment = $("#feedback-comment").val();
+        doAjax("ajax", ajaxData);
+        $("#feedback-name").val("");
+        $("#feedback-email").val("");
+        $("#feedback-comment").val("");
+    }
+
 }

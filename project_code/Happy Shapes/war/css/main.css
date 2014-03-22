@@ -56,6 +56,10 @@ div.ui-input-text {
     background-image: url(images/icons/clear.png) !important;    
 }
 
+.ui-icon-chrome{
+    background-image: url(images/icons/Google-Chrome-icon.png) !important;    
+}
+
 .range-setter{
     width: 220px;
     cursor: pointer;
