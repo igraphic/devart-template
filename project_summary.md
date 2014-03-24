@@ -1,10 +1,33 @@
 # Happy Shapes
-Happy Shapes
+Happy Shapes (will surprise you!)
 ## Authors
 - Tyseer Mohamed, https://github.com/igraphic
 
 ## Description
-It's a simple web application to generate beautiful backgrounds based on the basic shapes (Circle, Square, Rectangle, Triangle, Hexagon, Octagon) by setting them randomly
+It's a simple web application to generate beautiful backgrounds using basic shapes. The number of shapes used are specified by the user, and the shapes parameters are specified randomly by Happy Shapes. 
+
+The current shapes used are 
+- Circle
+- Square
+- Rectangle
+- Triangle 
+- Hexagon
+- Octagon
+
+The parameters are:
+size, color, position, rotation .... 
+
+However the user can control all these parameters using Happy Shapes options
+
+![Happy Shapes Options](project_images/options01.png?raw=true "Happy Shapes Options")
+
+
+##Happy Shapes Future
+
+- Generate animated images (GIF), and Viedos
+- Integrate with Google Maps, the map will be in the background, and Happy Shapes will display photos from the current location using the Happy Shapes way.
+- View photo albums from Google+
+
 
 ## Link to Prototype
 
@@ -13,7 +36,7 @@ It's a simple web application to generate beautiful backgrounds based on the bas
 ## Example Code
 ```
 //Setting the default profile
-var dp = {maxSize: 30, minSize: 5, shapes: [0,2,3,4,6,8], angle: "never", fill: "random", stroke: "random", shadow: "always", opacity: "random"};
+var dp = {canvasWidth: 100, canvasHeight: 100, canvasBgColor: "white", numberOfActors: 0, shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never", colorRange: false, colorRange1: {r:255,g:255,b:255}, colorRange2: {r:0,g:0,b:255}};
 ```
 ## Links to External Libraries
 
