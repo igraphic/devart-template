@@ -1,19 +1,16 @@
-var delay = 1000;
 var canvas = null;
 var topMargin = 60;
 var leftMargin = 10;
-var dimension = new Object();
-var numberOfActors = 0;
-var canvasWidth = 100;
-var canvasHeight = 100;
 var running = false;
+var colorsRange = new Array();
 
-var refreshObj = null;     //used as workaround to refresh the canvas
+//var refreshObj = null;     //used as workaround to refresh the canvas
 
 //Set default profile
-var dp = {canvasBgColor: "white", shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never"};
+var dp = {canvasWidth: 100, canvasHeight: 100, canvasBgColor: "white", numberOfActors: 0, shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never", colorRange: false, colorRange1: {r:255,g:255,b:255}, colorRange2: {r:0,g:0,b:255}};
 
 $(document).ready(function() {
+    // testGradient();
 
     init();
 
@@ -37,34 +34,35 @@ function init() {
     $("#canvas-div").height($(window).height() - topMargin);
     $("#canvas-div").width($(window).width() - leftMargin);
 
-    canvasWidth = $("#canvas-div").width() - 15;
-    canvasHeight = $("#canvas-div").height() - 15;
-    initCanvas(canvasWidth, canvasHeight, dp.canvasBgColor);
+    dp.canvasWidth = $("#canvas-div").width() - 15;
+    dp.canvasHeight = $("#canvas-div").height() - 15;
+    initCanvas(dp.canvasWidth, dp.canvasHeight, dp.canvasBgColor);
 }
 
 function initCanvas(width, height, bgColor) {
     clearCanvas();
-    canvasWidth = width;
-    canvasHeight = height;
+    dp.canvasWidth = width;
+    dp.canvasHeight = height;
     $("#shapes-canvas").attr("width", width);
     $("#shapes-canvas").attr("height", height);
 
     canvas = new fabric.Canvas('shapes-canvas', {
         backgroundColor: bgColor,
         selection: false,
-        allowTouchScrolling: true
+        allowTouchScrolling: true,
+        renderOnAddRemove: false,
     });
-
-    if (refreshObj === null) {
-        refreshObj = new fabric.Circle({
-            left: 0,
-            top: 0,
-            fill: dp.canvasBgColor,
-            radius: 1
-        });
-        canvas.add(refreshObj);
-    }
-
+    /*
+     if (refreshObj === null) {
+     refreshObj = new fabric.Circle({
+     left: 0,
+     top: 0,
+     fill: dp.canvasBgColor,
+     radius: 1
+     });
+     canvas.add(refreshObj);
+     }
+     */
 }
 
 function getRandomColor() {
@@ -93,16 +91,21 @@ function addNewActor(x, y, callBack) {
     } else {
         actor.angle = dp.rotate;
     }
-
+    var fillColor =  getRandomColor();
+    var strokeColor =  getRandomColor();
+    if(dp.colorRange){
+        fillColor = colorsRange[getRandomInt(0,colorsRange.length)];
+        strokeColor = colorsRange[getRandomInt(0,colorsRange.length)];
+    }
     if (dp.fill === 'random') {
         actor.fill = null;
         if (getRandomInt(0, 1) === 1) {
-            actor.fill = getRandomColor();
+            actor.fill = fillColor;
         }
     } else if (dp.fill === 'never') {
         actor.fill = null;
     } else if (dp.fill === 'always') {
-        actor.fill = getRandomColor();
+        actor.fill = fillColor;
     } else {
         actor.fill = dp.fill;
     }
@@ -111,13 +114,13 @@ function addNewActor(x, y, callBack) {
     if (dp.stroke === 'random') {
         actor.stroke = null;
         if (getRandomInt(0, 1) === 1 || actor.fill === null) {
-            actor.stroke = getRandomColor();
+            actor.stroke = strokeColor;
             actor.strokeWidth = getRandomInt(1, 2);
         }
     } else if (dp.stroke === 'never') {
         actor.stroke = null;
     } else if (dp.stroke === 'always') {
-        actor.stroke = getRandomColor();
+        actor.stroke = strokeColor;
         actor.strokeWidth = getRandomInt(1, 2);
     } else {
         actor.stroke = dp.stroke;
@@ -141,7 +144,7 @@ function addNewActor(x, y, callBack) {
 
 
 
-    var opacity = getRandomArbitary(dp.minOpacity, dp.maxOpacity);
+
 
     actor.opacity = 0;
     var obj;
@@ -193,15 +196,49 @@ function addNewActor(x, y, callBack) {
         obj = new fabric.Circle(actor);
     }
 
-    canvas.add(obj);
-    obj.animate('opacity', opacity, {
-        onChange: canvas.renderAll.bind(canvas),
-        duration: 1000,
-        onComplete: callBack()
-    });
+    addObject(obj, callBack);
+
 
 }
 
+
+function addObject(obj, callBack) {
+    var opacity = getRandomArbitary(dp.minOpacity, dp.maxOpacity);
+    obj.opacity = opacity;
+    canvas.add(obj);
+    canvas.renderAll();
+    callBack();
+
+}
+
+function addObject_pattern(obj, callBack) {
+    fabric.Image.fromURL('css/images/icons/circle.png', function(img) {
+
+        img.scaleToWidth(100);
+        img.scaleToHeight(100);
+        var patternSourceCanvas = new fabric.StaticCanvas();
+        patternSourceCanvas.add(img);
+
+        var pattern = new fabric.Pattern({
+            source: function() {
+                patternSourceCanvas.setDimensions({
+                    width: img.getWidth(),
+                    height: img.getHeight()
+                });
+                return patternSourceCanvas.getElement();
+            }
+        });
+
+        var opacity = getRandomArbitary(dp.minOpacity, dp.maxOpacity);
+        obj.opacity = opacity;
+        obj.fill = pattern;
+        canvas.add(obj);
+        canvas.renderAll();
+        callBack();
+    });
+
+
+}
 
 function save() {
     var canvas = document.getElementById("shapes-canvas");
@@ -236,19 +273,19 @@ function SaveToDisk(fileURL, fileName) {
 }
 
 function addRandomActors(no) {
-    if (numberOfActors > 0) {
+    if (dp.numberOfActors > 0) {
         if (no > 0) {
             $("#go-button").hide();
             $("#stop-button").show();
             running = true;
-            addNewActor(getRandomInt(-1 * (dp.minSize / 2), canvasWidth), getRandomInt(-1 * (dp.minSize / 2), canvasHeight), function() {
+            addNewActor(getRandomInt(-1 * (dp.minSize / 2), dp.canvasWidth), getRandomInt(-1 * (dp.minSize / 2), dp.canvasHeight), function() {
                 setTimeout(function()
                 {
                     addRandomActors(no - 1);
 
                 }
                 , 10);
-                $("#progress-span").text("loading(" + (numberOfActors - no) + "/" + numberOfActors + ")");
+                $("#progress-span").text("loading(" + (dp.numberOfActors - no) + "/" + dp.numberOfActors + ")");
             });
         } else {
             running = false;
@@ -269,24 +306,28 @@ function clearCanvas() {
 }
 
 function showtime() {
-    if (numberOfActors > 0 && running === true) {
+    if (dp.numberOfActors > 0 && running === true) {
         $("#go-button").show();
         $("#stop-button").hide();
-        numberOfActors = 0;
+        dp.numberOfActors = 0;
         running = false;
         return;
     }
-    saveProfile();
+
     var selectedShapes = $("#shapes-div :checkbox:checked");
     if ($(selectedShapes).size() > 0) {
         dp.shapes = new Array();
         $(selectedShapes).each(function() {
             dp.shapes.push($(this).attr("id").replace("shape-", "") * 1);
         });
-        numberOfActors = $("#objects-spinner").val();
-        addRandomActors(numberOfActors);
+        dp.numberOfActors = $("#objects-spinner").val();
+        saveProfile();
+        if (dp.colorRange) {
+            setColorsRange();
+        }
+        addRandomActors(dp.numberOfActors);
     } else {
-        alert("please select at least on shape!");
+        alert("please select at least one shape!");
     }
 }
 
@@ -403,19 +444,19 @@ function UI_shapesButtons() {
 
 function UI_basicButtons() {
     $('#download-button').button({
-        text: false,
+        //text: false,
         icons: {primary: 'ui-icon-arrowthickstop-1-s'}
 
     });
 
     $('#clear-button').button({
-        text: false,
+        //text: false,
         icons: {primary: 'ui-icon-close'}
 
     });
 
     $('#options-button').button({
-        text: false,
+        //text: false,
         icons: {primary: 'ui-icon-gear'}
 
     });
@@ -433,7 +474,7 @@ function UI_basicButtons() {
     });
 
     $('#feedback-button').button({
-        text: false,
+       // text: false,
         icons: {primary: 'ui-icon-comment'}
 
     });
@@ -465,7 +506,7 @@ function UI_optionsDialog() {
         buttons: {
             Ok: function() {
 
-                if ($("#canvas-width-input").val() * 1 !== canvasWidth * 1 || $("#canvas-height-input").val() * 1 !== canvasHeight * 1) {
+                if ($("#canvas-width-input").val() * 1 !== dp.canvasWidth * 1 || $("#canvas-height-input").val() * 1 !== dp.canvasHeight * 1) {
                     initCanvas($("#canvas-width-input").val(), $("#canvas-height-input").val(), dp.canvasBgColor);
                 }
 
@@ -476,19 +517,19 @@ function UI_optionsDialog() {
     });
 
 
-
+    $('#bg-picker').css('backgroundColor', dp.canvasBgColor);
     $("#bg-picker").ColorPicker({
         onChange: function(hsb, hex, rgb) {
             dp.canvasBgColor = '#' + hex;
             $('#bg-picker').css('backgroundColor', dp.canvasBgColor);
             canvas.backgroundColor = dp.canvasBgColor;
             $('#bg-picker').css('color', '#' + invertColor(dp.canvasBgColor));
-            refreshCanvas();
+            canvas.renderAll();
         }
     });
 
-    $("#canvas-height-input").val(canvasHeight);
-    $("#canvas-width-input").val(canvasWidth);
+    $("#canvas-height-input").val(dp.canvasHeight);
+    $("#canvas-width-input").val(dp.canvasWidth);
     //Shapes size
     $("#size-slider").slider({
         range: true,
@@ -588,22 +629,55 @@ function UI_optionsDialog() {
     dp.minOpacity = $("#opacity-slider").slider("values", 0);
     dp.maxOpacity = $("#opacity-slider").slider("values", 1);
     $("#opacity-label").text("Opacity between " + dp.minOpacity + " & " + dp.maxOpacity);
-}
 
-function test() {
-    initCanvas(2000, 2000, "black");
-    refreshCanvas("black");
-}
+    //Color range
+    $("#color-range-button").button();
 
-function refreshCanvas() {
-    refreshObj = new fabric.Circle({
-        left: 0,
-        top: 0,
-        fill: dp.canvasBgColor,
-        radius: 1
+    $("#color-range-button").change(function() {
+        if (this.checked) {
+            $(".color-range-disabled").addClass("color-range-enabled").removeClass("color-range-disabled");
+            $("#color1-picker").css('background-color', "#" +
+                    makeColorPiece(dp.colorRange1.r) +
+                    makeColorPiece(dp.colorRange1.g) +
+                    makeColorPiece(dp.colorRange1.b));
+            $("#color2-picker").css('background-color',  "#" +
+                    makeColorPiece(dp.colorRange2.r) +
+                    makeColorPiece(dp.colorRange2.g) +
+                    makeColorPiece(dp.colorRange2.b));
+            dp.colorRange = true;
+            $("#color1-picker").ColorPicker({
+                onChange: function(hsb, hex, rgb) {
+                    dp.colorRange1 = rgb;
+                    $("#color1-picker").css('background-color', '#' + hex);
+                    $("#color1-picker").css('color', invertColor('#' + hex));
+                }
+            });
+            $("#color2-picker").ColorPicker({
+                onChange: function(hsb, hex, rgb) {
+                    dp.colorRange2 = rgb;
+                    $("#color2-picker").css('background-color', '#' + hex);
+                    $("#color2-picker").css('color', invertColor('#' + hex));
+                    
+                }
+            });
+        } else {
+            dp.colorRange = false;
+            $(".color-range-enabled").addClass("color-range-disabled").removeClass("color-range-enabled");
+        }
     });
-    canvas.add(refreshObj);
 }
+
+
+/*
+ function refreshCanvas() {
+ refreshObj = new fabric.Circle({
+ left: 0,
+ top: 0,
+ fill: dp.canvasBgColor,
+ radius: 1
+ });
+ canvas.add(refreshObj);
+ }*/
 
 function saveProfile() {
     var ajaxData = new Object();
@@ -625,4 +699,111 @@ function sendFeedback() {
         $("#feedback-comment").val("");
     }
 
+}
+
+function loadPattern(url) {
+    var pattern = new fabric.Pattern({
+        source: new fabric.Image.fromURL('css/images/happy shapes01.png', function(img) {
+            img.scaleToWidth(100);
+        }),
+        repeat: 'repeat'
+    });
+}
+
+function test() {
+    var pattern = null;
+    fabric.Image.fromURL('css/images/icons/circle.png', function(img) {
+
+        img.scaleToWidth(100);
+        img.scaleToHeight(100);
+        var patternSourceCanvas = new fabric.StaticCanvas();
+        patternSourceCanvas.add(img);
+
+        pattern = new fabric.Pattern({
+            source: function() {
+                patternSourceCanvas.setDimensions({
+                    width: img.getWidth(),
+                    height: img.getHeight()
+                });
+                return patternSourceCanvas.getElement();
+            }
+        });
+        canvas.add(new fabric.Circle(
+                {
+                    left: 100,
+                    top: 200,
+                    radius: 160,
+                    height: 160,
+                    fill: pattern
+                }));
+
+    });
+
+
+}
+
+function test_working() {
+    fabric.Image.fromURL('css/images/icons/circle.png', function(img) {
+
+        img.scaleToWidth(100);
+        img.scaleToHeight(100);
+        var patternSourceCanvas = new fabric.StaticCanvas();
+        patternSourceCanvas.add(img);
+
+        var pattern = new fabric.Pattern({
+            source: function() {
+                patternSourceCanvas.setDimensions({
+                    width: img.getWidth(),
+                    height: img.getHeight()
+                });
+                return patternSourceCanvas.getElement();
+            }
+        });
+
+        canvas.add(new fabric.Circle(
+                {
+                    left: 100,
+                    top: 200,
+                    radius: 160,
+                    height: 160,
+                    fill: pattern
+                }));
+    });
+
+}
+
+function setColorsRange() {
+    colorsRange = new Array();
+    for (var i = 1; i < 100; i++) {
+        colorsRange.push(makeGradientColor(dp.colorRange1, dp.colorRange2, i));
+    }
+}
+
+function makeGradientColor(color1, color2, percent) {
+    var newColor = {};
+
+    function makeChannel(a, b) {
+        return(a + Math.round((b - a) * (percent / 100)));
+    }
+
+
+
+    newColor.r = makeChannel(color1.r, color2.r);
+    newColor.g = makeChannel(color1.g, color2.g);
+    newColor.b = makeChannel(color1.b, color2.b);
+    newColor.cssColor = "#" +
+            makeColorPiece(newColor.r) +
+            makeColorPiece(newColor.g) +
+            makeColorPiece(newColor.b);
+    return(newColor.cssColor);
+}
+
+function makeColorPiece(num) {
+    num = Math.min(num, 255);   // not more than 255
+    num = Math.max(num, 0);     // not less than 0
+    var str = num.toString(16);
+    if (str.length < 2) {
+        str = "0" + str;
+    }
+    return(str);
 }

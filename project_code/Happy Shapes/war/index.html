@@ -22,34 +22,31 @@ and open the template in the editor.
     <body>
         <div id="main-div">    
             <div id="toolbar" class="ui-widget-header">
-                <div id="shapes-control-div">
-                    <button id="options-button">Options</button>
+                <div id="shapes-control-div">                    
                     <span id="shapes-div">
                         <input type="checkbox" checked="checked" id="shape-0"><label for="shape-0">Circle</label>
                         <input type="checkbox" checked="checked" id="shape-2"><label for="shape-2">Square</label>
                         <input type="checkbox" checked="checked" id="shape-4"><label for="shape-4">Rectangle</label>                
                         <input type="checkbox" checked="checked" id="shape-3"><label for="shape-3">Triangle</label>
                         <input type="checkbox" checked="checked" id="shape-6"><label for="shape-6">Hexagon</label>
-                        <input type="checkbox" checked="checked" id="shape-8"><label for="shape-8">Octagon</label>
+                        <input type="checkbox" checked="checked" id="shape-8"><label for="shape-8">Octagon</label>                        
                     </span>
-                    <span title="Change background color" class="cpicker" id="bg-picker">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>                            
+                    <span title="Change background color" class="cpicker" id="bg-picker">&nbsp;</span> 
 
 
                     <label for="objects-spinner">Number of Objects:</label>
                     <input class="numeric-input" id="objects-spinner" name="objects-spinner" value="100">
                     <button id="go-button" onclick="showtime();">Go!</button>
                     <button id="stop-button" style="display: none" onclick="showtime();">Stop!</button>
-                    <button id="test-button" style="display: none" onclick="test();">test</button>
                     <span id="progress-span"></span>            
 
                 </div>
                 <div id="basic-buttons-div">
                     <button id="chrome-button" title="Tested on google chrome!" onclick="window.open('https://www.google.com/intl/en/chrome/browser/', '_blank');">Chrome</button>
                     <button id="feedback-button">feedback</button>
-                    <button id="download-button" onclick="save();">Download</button>
-                    
+                    <button id="download-button" onclick="save();">Download</button>                    
                     <button id="clear-button" onclick="clearCanvas();">Clear</button>
-
+                    <button id="options-button">Settings</button>
                 </div>
                 <div id="feedback-form" title="Your feedback">
                     <form>
@@ -74,11 +71,11 @@ and open the template in the editor.
                     <fieldset>
                         <div class="option-row">
                             <span>
-                                Canvas Width: 
+                                Canvas width: 
                             </span>
                             <input class="numeric-input" id="canvas-width-input" name="canvas-width-input" value="100">
                             <span>
-                                Canvas Height 
+                                Canvas height 
                             </span>
                             <input class="numeric-input" id="canvas-height-input" name="canvas-height-input" value="100">
                         </div>   
@@ -172,6 +169,16 @@ and open the template in the editor.
                                     <div id="opacity-slider"></div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="color-range-button"><label for="color-range-button">Color range</label>
+                                </td>
+                                <td>
+                                    <span title="Select first color" class="cpicker color-range-disabled" id="color1-picker">first color</span> 
+                                    <span title="Select second color" class="cpicker color-range-disabled" id="color2-picker">second color</span> 
+                                </td>
+                            </tr>
+                            
 
                         </table>
                         <div class="option-row">
