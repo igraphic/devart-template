@@ -31,9 +31,11 @@ var dp = {maxSize: 30, minSize: 5, shapes: [0,2,3,4,6,8], angle: "never", fill: 
 
 ## Images & Videos
 
-![Happy shapes](project_images/happy shapes05.png?raw=true "Happy shapes")
+![Happy shapes](project_images/happy shapes06.png?raw=true "Happy shapes")
 
 # Earlier
+
+![Happy shapes](project_images/happy shapes05.png?raw=true "Happy shapes")
 
 ![Happy shapes](project_images/happy shapes04.png?raw=true "Happy shapes")
 
