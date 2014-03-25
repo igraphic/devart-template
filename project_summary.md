@@ -1,10 +1,10 @@
 # Happy Shapes
-Happy Shapes (will surprise you!)
+**Happy Shapes** (_will surprise you!_)
 ## Authors
 - Tyseer Mohamed, https://github.com/igraphic
 
 ## Description
-It's a simple web application to generate beautiful backgrounds using basic shapes. The number of shapes used are specified by the user, and the shapes parameters are specified randomly by Happy Shapes. 
+It's a simple web application to generate beautiful backgrounds using basic shapes. The number of shapes used are specified by the user, and the shapes parameters are specified randomly by **Happy Shapes**. 
 
 The current shapes used are 
 - Circle
@@ -17,7 +17,7 @@ The current shapes used are
 The parameters are:
 size, color, position, rotation .... 
 
-However the user can control all these parameters using Happy Shapes options
+However the user can control all these parameters using **Happy Shapes** options, and now with the "Surprise me!" button **Happy Shapes** will work based on a set of options selected randomly, which is a lot of fun ;)
 
 ![Happy Shapes Options](project_images/options01.png?raw=true "Happy Shapes Options")
 
@@ -25,13 +25,16 @@ However the user can control all these parameters using Happy Shapes options
 ##Happy Shapes Future
 
 - Generate animated images (GIF), and Viedos
-- Integrate with Google Maps, the map will be in the background, and Happy Shapes will display photos from the current location using the Happy Shapes way.
+- Integrate with Google Maps, the map will be in the background, and **Happy Shapes** will display photos from the current location using the **Happy Shapes** way.
 - View photo albums from Google+
 
 
 ## Link to Prototype
 
+Please note that **Happy Shapes** is tested on Google Chrome only
 [Happy shapes](http://happy-shapes.appspot.com/ "Happy shapes")
+
+**Happy Shapes** going to be more friendly with mobile devices, and other modern browsers.
 
 ## Example Code
 ```
