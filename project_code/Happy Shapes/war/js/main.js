@@ -7,10 +7,11 @@ var colorsRange = new Array();
 //var refreshObj = null;     //used as workaround to refresh the canvas
 
 //Set default profile
-var dp = {canvasWidth: 100, canvasHeight: 100, canvasBgColor: "white", numberOfActors: 0, shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never", colorRange: false, colorRange1: {r:255,g:255,b:255}, colorRange2: {r:0,g:0,b:255}};
+var dp = {source: 0, canvasWidth: 100, canvasHeight: 100, canvasBgColor: "white", numberOfActors: 0, shapes: [0, 2, 3, 4, 6, 8], maxSize: 30, minSize: 5, maxRotate: 180, minRotate: 0, maxOpacity: 1.0, minOpacity: 0.1, rotate: "always", fill: "never", stroke: "random", shadow: "never", colorRange: false, colorRange1: {r: 255, g: 255, b: 255}, colorRange2: {r: 0, g: 0, b: 255}};
 
 $(document).ready(function() {
     // testGradient();
+
 
     init();
 
@@ -65,9 +66,6 @@ function initCanvas(width, height, bgColor) {
      */
 }
 
-function getRandomColor() {
-    return "#" + (Math.random() * 0xFFFFFF << 0).toString(16);
-}
 
 function addNewActor(x, y, callBack) {
     var actor = new Object();
@@ -91,11 +89,11 @@ function addNewActor(x, y, callBack) {
     } else {
         actor.angle = dp.rotate;
     }
-    var fillColor =  getRandomColor();
-    var strokeColor =  getRandomColor();
-    if(dp.colorRange){
-        fillColor = colorsRange[getRandomInt(0,colorsRange.length)];
-        strokeColor = colorsRange[getRandomInt(0,colorsRange.length)];
+    var fillColor = $.xcolor.random().getHex();
+    var strokeColor = $.xcolor.random().getHex();
+    if (dp.colorRange) {
+        fillColor = colorsRange[getRandomInt(0, colorsRange.length)];
+        strokeColor = colorsRange[getRandomInt(0, colorsRange.length)];
     }
     if (dp.fill === 'random') {
         actor.fill = null;
@@ -274,22 +272,31 @@ function SaveToDisk(fileURL, fileName) {
 
 function addRandomActors(no) {
     if (dp.numberOfActors > 0) {
+        var delay = 1;
         if (no > 0) {
             $("#go-button").hide();
+            $("#surprise-button").hide();
             $("#stop-button").show();
             running = true;
+
+            if (dp.numberOfActors < 200) {
+                delay = 10;
+            } else if (dp.numberOfActors < 500) {
+                delay = 5;
+            }
             addNewActor(getRandomInt(-1 * (dp.minSize / 2), dp.canvasWidth), getRandomInt(-1 * (dp.minSize / 2), dp.canvasHeight), function() {
                 setTimeout(function()
                 {
                     addRandomActors(no - 1);
 
                 }
-                , 10);
+                , delay);
                 $("#progress-span").text("loading(" + (dp.numberOfActors - no) + "/" + dp.numberOfActors + ")");
             });
         } else {
             running = false;
             $("#go-button").show();
+            $("#surprise-button").show();
             $("#stop-button").hide();
             $("#progress-span").text("");
         }
@@ -305,15 +312,19 @@ function clearCanvas() {
     }
 }
 
-function showtime() {
+function showtime(source) {
     if (dp.numberOfActors > 0 && running === true) {
         $("#go-button").show();
+        $("#surprise-button").show();
         $("#stop-button").hide();
         dp.numberOfActors = 0;
         running = false;
         return;
     }
 
+    if (source === 0 || source === 1) {//0     Surprise me button!, 1     go button! 
+        dp.source = source;
+    }
     var selectedShapes = $("#shapes-div :checkbox:checked");
     if ($(selectedShapes).size() > 0) {
         dp.shapes = new Array();
@@ -390,7 +401,7 @@ function UI_objectsNumber() {
     $("#objects-spinner").keyup(function(e) {
         if (e.keyCode === 13)
         {
-            showtime();
+            showtime(1);
         }
     });
 
@@ -406,6 +417,8 @@ function UI_objectsNumber() {
     });
     $("#go-button").button();
     $("#stop-button").button();
+
+    $("#surprise-button").button();
 }
 
 function UI_shapesButtons() {
@@ -474,7 +487,7 @@ function UI_basicButtons() {
     });
 
     $('#feedback-button').button({
-       // text: false,
+        // text: false,
         icons: {primary: 'ui-icon-comment'}
 
     });
@@ -523,7 +536,6 @@ function UI_optionsDialog() {
             dp.canvasBgColor = '#' + hex;
             $('#bg-picker').css('backgroundColor', dp.canvasBgColor);
             canvas.backgroundColor = dp.canvasBgColor;
-            $('#bg-picker').css('color', '#' + invertColor(dp.canvasBgColor));
             canvas.renderAll();
         }
     });
@@ -616,10 +628,10 @@ function UI_optionsDialog() {
     //Opacity
     $("#opacity-slider").slider({
         range: true,
-        min: 0.1,
+        min: 0.01,
         max: 1,
         values: [0.1, 1],
-        step: 0.1,
+        step: 0.01,
         slide: function(event, ui) {
             dp.minOpacity = ui.values[ 0 ];
             dp.maxOpacity = ui.values[ 1 ];
@@ -640,7 +652,7 @@ function UI_optionsDialog() {
                     makeColorPiece(dp.colorRange1.r) +
                     makeColorPiece(dp.colorRange1.g) +
                     makeColorPiece(dp.colorRange1.b));
-            $("#color2-picker").css('background-color',  "#" +
+            $("#color2-picker").css('background-color', "#" +
                     makeColorPiece(dp.colorRange2.r) +
                     makeColorPiece(dp.colorRange2.g) +
                     makeColorPiece(dp.colorRange2.b));
@@ -657,7 +669,7 @@ function UI_optionsDialog() {
                     dp.colorRange2 = rgb;
                     $("#color2-picker").css('background-color', '#' + hex);
                     $("#color2-picker").css('color', invertColor('#' + hex));
-                    
+
                 }
             });
         } else {
@@ -806,4 +818,160 @@ function makeColorPiece(num) {
         str = "0" + str;
     }
     return(str);
+}
+
+function surpriseMe() {
+    var sizeInterval = getRandomInt(0, 20);
+    var maxNumberInterval = getRandomArbitary(1.5, 3.5);
+    var maxSize = 300;
+    var minSize = 15;
+    if (sizeInterval < 12) {
+        maxSize = 40;
+    } else if (sizeInterval < 15) {
+        maxSize = 50;
+        maxNumberInterval = getRandomArbitary(3.5, 4.5);
+    } else if (sizeInterval < 17) {
+        maxSize = 70;
+        maxNumberInterval = getRandomArbitary(3.5, 4.5);
+    } else {
+        maxNumberInterval = getRandomArbitary(3.5, 4.5);
+        minSize = 0;
+    }
+    var size1 = getRandomInt(minSize, maxSize);
+    var size2 = getRandomInt(minSize, maxSize);
+    dp.maxSize = Math.max(size1, size2);
+    dp.minSize = Math.min(size1, size2);
+
+    $("#size-slider").slider("values", [dp.minSize, dp.maxSize]);
+    $("#size-label").text("Shapes size between " + dp.minSize + " & " + dp.maxSize);
+
+
+    var opacity1 = Math.round(getRandomArbitary(0.1, 1.0) * 100) / 100;
+    var opacity2 = Math.round(getRandomArbitary(0.1, 1.0) * 100) / 100;
+    dp.maxOpacity = Math.max(opacity1, opacity2);
+    dp.minOpacity = Math.min(opacity1, opacity2);
+
+    $("#opacity-slider").slider("values", [dp.minOpacity, dp.maxOpacity, ]);
+    $("#opacity-label").text("Opacity between " + dp.minOpacity + " & " + dp.maxOpacity);
+
+    dp.numberOfActors = Math.floor(Math.min(dp.canvasWidth, dp.canvasHeight) / maxNumberInterval);
+    $("#objects-spinner").val(dp.numberOfActors);
+    //Uncheck all shapes
+    $('#shapes-div :checkbox').each(function() {
+        document.getElementById($(this).attr("id")).checked = false;
+        $(this).button("refresh");
+    });
+    dp.shapes = new Array();
+    var noOfSahpes = getRandomInt(1, $("#shapes-div :checkbox").size() + 5);
+    if (noOfSahpes - 2 > $("#shapes-div :checkbox").size()) {
+        noOfSahpes = 2;
+    } else if (noOfSahpes > $("#shapes-div :checkbox").size()) {
+        noOfSahpes = 1;
+    }
+
+    var r1 = getRandomInt(0, 4);
+    if (getRandomInt(0, 3)) {
+        if (r1 === 0) {
+            dp.fill = "never";
+        } else if (r1 === 1) {
+            dp.fill = "always";
+        } else {
+            dp.fill = "random";
+        }
+    }
+    document.getElementById("fill-" + dp.fill).checked = true;
+    $("#fill-" + dp.fill).button("refresh");
+    if (dp.fill === "never") {
+        dp.stroke = "always";
+    } else {
+        r1 = getRandomInt(0, 4);
+        if (r1 === 0) {
+            dp.stroke = "never";
+            dp.fill = "always";
+        } else if (r1 === 1) {
+            dp.stroke = "always";
+        } else {
+            dp.stroke = "random";
+        }
+    }
+
+    r1 = getRandomInt(0, 4);
+    if (r1 === 0) {
+        dp.shadow = "never";
+    } else if (r1 === 1) {
+        dp.shadow = "random";
+    } else {
+        dp.shadow = "always";
+    }
+
+    r1 = getRandomInt(0, 4);
+    if (r1 === 0) {
+        dp.rotate = "always";
+    } else if (r1 === 1) {
+        dp.rotate = "random";
+    } else {
+        dp.rotate = "never";
+    }
+
+    document.getElementById("fill-" + dp.fill).checked = true;
+    $("#fill-" + dp.fill).button("refresh");
+
+    document.getElementById("stroke-" + dp.stroke).checked = true;
+    $("#stroke-" + dp.stroke).button("refresh");
+
+    document.getElementById("shadow-" + dp.shadow).checked = true;
+    $("#shadow-" + dp.shadow).button("refresh");
+
+    document.getElementById("rotate-" + dp.rotate).checked = true;
+    $("#rotate-" + dp.rotate).button("refresh");
+
+    r1 = getRandomInt(0, 4);
+    if (r1 === 0) {
+        dp.canvasBgColor = $.xcolor.random().getHex();
+    } else if (r1 > 2) {
+        dp.canvasBgColor = "black";
+    } else {
+        dp.canvasBgColor = "white";
+    }
+    r1 = getRandomInt(0, 2);
+    if (r1 === 0) {
+        dp.colorRange = true;
+        var cRandom = $.xcolor.random();
+        dp.colorRange1 = cRandom.getRGB();
+        dp.colorRange2 = $.xcolor.complementary(cRandom).getRGB();
+        document.getElementById("color-range-button").checked = true;
+        $("#color-range-button").button("refresh");
+
+        $(".color-range-disabled").addClass("color-range-enabled").removeClass("color-range-disabled");
+        $("#color1-picker").css('background-color', "#" +
+                makeColorPiece(dp.colorRange1.r) +
+                makeColorPiece(dp.colorRange1.g) +
+                makeColorPiece(dp.colorRange1.b));
+        $("#color2-picker").css('background-color', "#" +
+                makeColorPiece(dp.colorRange2.r) +
+                makeColorPiece(dp.colorRange2.g) +
+                makeColorPiece(dp.colorRange2.b));
+    } else if (r1 === 1) {
+        dp.colorRange = false;
+        document.getElementById("color-range-button").checked = false;
+        $("#color-range-button").button("refresh");
+        $(".color-range-enabled").addClass("color-range-disabled").removeClass("color-range-enabled");
+    }
+
+    canvas.backgroundColor = dp.canvasBgColor;
+    $('#bg-picker').css('backgroundColor', dp.canvasBgColor);
+
+
+    for (var i = 0; i < noOfSahpes; i++) {
+        var unCheckedShapes = $("#shapes-div :checkbox:not(:checked)").size();
+        if (unCheckedShapes > 0) {
+            var unchIndex = getRandomInt(0, unCheckedShapes - 1);
+            var shapeId = $("#shapes-div :checkbox:not(:checked):eq(" + unchIndex + ")").attr("id");
+            document.getElementById(shapeId).checked = true;
+            $("#" + shapeId).button("refresh");
+            dp.shapes.push(shapeId.replace("shape-", ""));
+        }
+
+    }
+    showtime(0);
 }

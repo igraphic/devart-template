@@ -17,12 +17,14 @@ and open the template in the editor.
         <script type="text/javascript" src="js/lib/jquery-ui-1.10.4.custom.min.js"></script>
         <script type="text/javascript" src="js/lib/fabric.min.js"></script>
         <script type="text/javascript" src="js/lib/colorpicker.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.xcolor.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
     </head>
     <body>
         <div id="main-div">    
             <div id="toolbar" class="ui-widget-header">
-                <div id="shapes-control-div">                    
+                <div id="shapes-control-div">
+                    <button id="options-button">Happy Shapes</button>
                     <span id="shapes-div">
                         <input type="checkbox" checked="checked" id="shape-0"><label for="shape-0">Circle</label>
                         <input type="checkbox" checked="checked" id="shape-2"><label for="shape-2">Square</label>
@@ -33,19 +35,21 @@ and open the template in the editor.
                     </span>
                     <span title="Change background color" class="cpicker" id="bg-picker">&nbsp;</span> 
 
-                    <button id="options-button">Happy Shapes</button>
+
                     <label for="objects-spinner">Number of Objects:</label>
                     <input class="numeric-input" id="objects-spinner" name="objects-spinner" value="100">
-                    <button id="go-button" onclick="showtime();">Go!</button>
+                    <button id="go-button" title="Go with current settings" onclick="showtime(1);">Go!</button>
                     <button id="stop-button" style="display: none" onclick="showtime();">Stop!</button>
-                    <span id="progress-span"></span>            
+                    <span id="progress-span"></span>        
+                    <button id="surprise-button" title="Surprise me with random settings!"  onclick="surpriseMe();">Surprise me!</button>
+                    <button id="clear-button" onclick="clearCanvas();">Clear</button>   
 
                 </div>
                 <div id="basic-buttons-div">
                     <button id="chrome-button" title="Tested on google chrome!" onclick="window.open('https://www.google.com/intl/en/chrome/browser/', '_blank');">Chrome</button>
                     <button id="feedback-button">feedback</button>
                     <button id="download-button" onclick="save();">Download</button>                    
-                    <button id="clear-button" onclick="clearCanvas();">Clear</button>                    
+
                 </div>
                 <div id="feedback-form" title="Your feedback">
                     <form>
@@ -177,7 +181,7 @@ and open the template in the editor.
                                     <span title="Select second color" class="cpicker color-range-disabled" id="color2-picker">second color</span> 
                                 </td>
                             </tr>
-                            
+
 
                         </table>
                         <div class="option-row">
