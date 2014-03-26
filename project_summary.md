@@ -1,5 +1,5 @@
 # Happy Shapes
-**Happy Shapes** (_will surprise you!_)
+**Happy Shapes** _will surprise you!_
 ## Authors
 - Tyseer Mohamed, https://github.com/igraphic
 
@@ -31,8 +31,9 @@ However the user can control all these parameters using **Happy Shapes** options
 
 ## Link to Prototype
 
-Please note that **Happy Shapes** is tested on Google Chrome only
 [Happy shapes](http://happy-shapes.appspot.com/ "Happy shapes")
+
+Please note that **Happy Shapes** is tested on Google Chrome only
 
 **Happy Shapes** going to be more friendly with mobile devices, and other modern browsers.
 

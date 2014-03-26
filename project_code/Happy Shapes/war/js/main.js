@@ -485,9 +485,14 @@ function UI_basicButtons() {
         icons: {primary: 'ui-icon-chrome', secondary: null}
 
     });
+    
+    $("#google-plus-button").button({
+        text:false,
+        icons: {primary: 'ui-icon-google-plus'}
+    });
 
     $('#feedback-button').button({
-        // text: false,
+         //text: false,
         icons: {primary: 'ui-icon-comment'}
 
     });
@@ -499,7 +504,7 @@ function UI_basicButtons() {
     $("#feedback-form").dialog({
         autoOpen: false,
         width: '35%',
-        height: '300',
+        height: '320',
         buttons: {
             Ok: function() {
                 sendFeedback();

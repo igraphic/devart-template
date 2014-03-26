@@ -60,6 +60,10 @@ div.ui-input-text {
     background-image: url(images/icons/Google-Chrome-icon.png) !important;    
 }
 
+.ui-icon-google-plus{
+    background-image: url(images/icons/google+.png) !important;   
+}
+
 .range-setter{
     width: 220px;
     cursor: pointer;
@@ -81,7 +85,7 @@ div.ui-input-text {
     display: inline-block;
     color: black;
     text-align: center;
-    
+
 }
 
 .color-range-disabled{
