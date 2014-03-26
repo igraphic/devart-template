@@ -4,9 +4,9 @@ Now I'm really excited with what people can use **Happy Shapes** for
 
 A friend of mine - who is a designer - used **Happy Shapes** to create this
 
-![Happy shapes Surprise me](project_images/10014692_10100196916625940_1502326657_n.jpg?raw=true "Happy shapes Surprise me")
+![Happy shapes designs](project_images/10014692_10100196916625940_1502326657_n.jpg?raw=true "Happy shapes designs")
 
-![Happy shapes Surprise me](project_images/10155548_10100196916600990_308340839_n.jpg?raw=true "Happy shapes Surprise me")
+![Happy shapes designs](project_images/10155548_10100196916600990_308340839_n.jpg?raw=true "Happy shapes designs")
 
 
 
