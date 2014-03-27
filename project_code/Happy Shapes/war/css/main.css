@@ -16,6 +16,7 @@ body, html { /* set size of body to full page and remove margins */
     background-color: #ccc;    
     width: 100%;
     overflow: scroll;
+
 }
 
 div.ui-input-text {
@@ -111,10 +112,11 @@ div.ui-input-text {
 #shapes-control-div{
     float: left;
     margin-left: 5px;
+    text-align: left;
 }
 
 #toolbar{
-
+    height:auto;
 }
 
 #main-div{
@@ -130,3 +132,8 @@ div.ui-input-text {
     margin: 3px !important;
 }
 
+.ui-menu { position: absolute; width: 100px;   z-index: 100; }
+
+#download-buttons{
+    /* float: left;*/
+}

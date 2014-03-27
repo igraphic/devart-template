@@ -13,7 +13,7 @@ $(document).ready(function() {
     // testGradient();
 
 
-    init();
+
 
     UI_basicButtons();
 
@@ -22,18 +22,17 @@ $(document).ready(function() {
     UI_shapesButtons();
 
     UI_optionsDialog();
-
+    
+    init();  
+    
 
 
 
 });
 
 function init() {
-
-    $("#toolbar").height(36);
-    topMargin = $("#toolbar").height();
-    $("#canvas-div").height($(window).height() - topMargin);
-    $("#canvas-div").width($(window).width() - leftMargin);
+    $("#canvas-div").height($(window).height() - $("#toolbar").height());
+    $("#canvas-div").width($(window).width());
 
     dp.canvasWidth = $("#canvas-div").width() - 15;
     dp.canvasHeight = $("#canvas-div").height() - 15;
@@ -53,17 +52,9 @@ function initCanvas(width, height, bgColor) {
         allowTouchScrolling: true,
         renderOnAddRemove: false,
     });
-    /*
-     if (refreshObj === null) {
-     refreshObj = new fabric.Circle({
-     left: 0,
-     top: 0,
-     fill: dp.canvasBgColor,
-     radius: 1
-     });
-     canvas.add(refreshObj);
-     }
-     */
+    
+    $("#canvas-height-input").val(height);
+    $("#canvas-width-input").val(width);
 }
 
 
@@ -238,11 +229,25 @@ function addObject_pattern(obj, callBack) {
 
 }
 
+function savePNG() {
+    var hsCanvas = document.getElementById("shapes-canvas");
+    var ctx = hsCanvas.getContext("2d");  
+    hsCanvas.toBlob(function(blob) {
+        saveAs(blob, "Happy Shapes.png");
+    });
+}
+
+
+function saveSVG() {
+    var blob = new Blob([canvas.toSVG()], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "Happy Shapes.svg");
+}
+
 function save() {
-    var canvas = document.getElementById("shapes-canvas");
-    if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");                // Get the context for the canvas.
-        var imgContents = canvas.toDataURL('image/png');      // Get the data as an image.
+    var c = document.getElementById("shapes-canvas");
+    if (c.getContext) {
+        var ctx = c.getContext("2d");                // Get the context for the canvas.
+        var imgContents = c.toDataURL('image/png');      // Get the data as an image.
         SaveToDisk(imgContents, "Happy Shapes.png");
     }
 }
@@ -284,7 +289,7 @@ function addRandomActors(no) {
             } else if (dp.numberOfActors < 500) {
                 delay = 5;
             }
-            addNewActor(getRandomInt(-1 * (dp.minSize / 2), dp.canvasWidth), getRandomInt(-1 * (dp.minSize / 2), dp.canvasHeight), function() {
+            addNewActor(getRandomInt(0, dp.canvasWidth), getRandomInt(0, dp.canvasHeight), function() {
                 setTimeout(function()
                 {
                     addRandomActors(no - 1);
@@ -456,11 +461,30 @@ function UI_shapesButtons() {
 }
 
 function UI_basicButtons() {
-    $('#download-button').button({
-        //text: false,
-        icons: {primary: 'ui-icon-arrowthickstop-1-s'}
 
-    });
+    $("#download-button")
+            .button({
+        icons: {primary: 'ui-icon-arrowthickstop-1-s'}
+    }).click(function() {
+        savePNG();
+    }).next().button({
+        text: false,
+        icons: {
+            primary: "ui-icon-triangle-1-s"
+        }
+    }).click(function() {
+        var menu = $(this).parent().next().show().position({
+            my: "left top",
+            at: "left bottom",
+            of: this
+        });
+        $(document).one("click", function() {
+            menu.hide();
+        });
+        return false;
+    }).parent().buttonset().next().hide().menu();
+
+
 
     $('#clear-button').button({
         //text: false,
@@ -485,14 +509,14 @@ function UI_basicButtons() {
         icons: {primary: 'ui-icon-chrome', secondary: null}
 
     });
-    
+
     $("#google-plus-button").button({
-        text:false,
+        text: false,
         icons: {primary: 'ui-icon-google-plus'}
     });
 
     $('#feedback-button').button({
-         //text: false,
+        //text: false,
         icons: {primary: 'ui-icon-comment'}
 
     });
@@ -503,8 +527,8 @@ function UI_basicButtons() {
 
     $("#feedback-form").dialog({
         autoOpen: false,
-        width: '35%',
-        height: '320',
+        width: "auto",
+        height: "auto",
         buttons: {
             Ok: function() {
                 sendFeedback();
@@ -519,8 +543,8 @@ function UI_basicButtons() {
 function UI_optionsDialog() {
     $("#options-dialog").dialog({
         autoOpen: false,
-        width: '40%',
-        height: '560',
+        width: "auto",
+        height: "auto",
         buttons: {
             Ok: function() {
 
@@ -545,8 +569,7 @@ function UI_optionsDialog() {
         }
     });
 
-    $("#canvas-height-input").val(dp.canvasHeight);
-    $("#canvas-width-input").val(dp.canvasWidth);
+    
     //Shapes size
     $("#size-slider").slider({
         range: true,
@@ -979,4 +1002,29 @@ function surpriseMe() {
 
     }
     showtime(0);
+}
+
+
+function imageTest() {
+    var c = document.createElement('canvas');
+    ctx = c.getContext("2d");
+
+    c.width = 903;
+    c.height = 657;
+
+
+    var background = new Image();
+    background.src = "http://www.samskirrow.com/background.png";
+
+// Make sure the image is loaded first otherwise nothing will draw.
+    background.onload = function() {
+        ctx.drawImage(background, 0, 0);
+    }
+    if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        var imgData = ctx.getImageData(0, 0, 20, 20);
+        ctx.putImageData(imgData, 10, 70);
+        console.log(JSON.stringify(imgData));
+    }
+
 }

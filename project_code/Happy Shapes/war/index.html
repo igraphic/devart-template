@@ -4,158 +4,215 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html>
-<head>
-<title>Happy Shapes (beta)</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <head>
+        <title>Happy Shapes (beta)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="css/jquery-ui/jquery-ui-1.10.4.custom.min.css">
+        <link type="text/css" rel="stylesheet" href="css/color-picker/css/colorpicker.css">
+        <link type="text/css" rel="stylesheet" href="css/main.css">
 
-<link type="text/css" rel="stylesheet" href="css/jquery-ui/jquery-ui-1.10.4.custom.min.css">
-<link type="text/css" rel="stylesheet" href="css/color-picker/css/colorpicker.css">
-<link type="text/css" rel="stylesheet" href="css/main.css">
+        <script type="text/javascript" src="js/lib/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.ui.touch-punch.min.js"></script>
+        <script type="text/javascript" src="js/lib/fabric.min.js"></script>
+        <script type="text/javascript" src="js/lib/colorpicker.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.xcolor.js"></script>
+        <script type="text/javascript" src="js/lib/canvas-toBlob.js"></script>
+        <script type="text/javascript" src="js/lib/FileSaver.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
 
-<script type="text/javascript" src="js/lib/jquery-2.1.0.min.js"></script>
-<script type="text/javascript" src="js/lib/jquery.mousewheel.js"></script>
-<script type="text/javascript" src="js/lib/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="js/lib/fabric.min.js"></script>
-<script type="text/javascript" src="js/lib/colorpicker.js"></script>
-<script type="text/javascript" src="js/lib/jquery.xcolor.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
-
-</head>
-<body>
-	<div id="main-div">
-		<div id="toolbar" class="ui-widget-header">
-			<div id="shapes-control-div">
-				<button id="options-button">Happy Shapes</button>
-				<span id="shapes-div"> <input type="checkbox" checked="checked" id="shape-0"><label for="shape-0">Circle</label> <input
-					type="checkbox" checked="checked" id="shape-2"><label for="shape-2">Square</label> <input type="checkbox" checked="checked" id="shape-4"><label
-					for="shape-4">Rectangle</label> <input type="checkbox" checked="checked" id="shape-3"><label for="shape-3">Triangle</label> <input
-					type="checkbox" checked="checked" id="shape-6"><label for="shape-6">Hexagon</label> <input type="checkbox" checked="checked" id="shape-8"><label
-					for="shape-8">Octagon</label>
-				</span> <span title="Change background color" class="cpicker" id="bg-picker">&nbsp;</span> <label for="objects-spinner">Number of Objects:</label> <input
-					class="numeric-input" id="objects-spinner" name="objects-spinner" value="100">
-				<button id="go-button" title="Go with current settings" onclick="showtime(1);">Go!</button>
-				<button id="stop-button" style="display: none" onclick="showtime();">Stop!</button>
-				<span id="progress-span"></span>
-				<button id="surprise-button" title="Surprise me with random settings!" onclick="surpriseMe();">Surprise me!</button>
-				<button id="download-button" title="Save to your computer" onclick="save();">Download</button>
-				<button id="clear-button" onclick="clearCanvas();">Clear</button>
-
-			</div>
-			<div id="basic-buttons-div">
-				<button id="chrome-button" title="Tested on google chrome!" onclick="window.open('https://www.google.com/intl/en/chrome/browser/', '_blank');">Chrome</button>
-				<button id="google-plus-button" onclick="window.open('https://plus.google.com/112500451712162104420', '_blank');">Happy Shapes on Google+</button>
-				<button id="feedback-button">Feedback</button>
+    </head>
+    <body>
+        <div id="main-div">    
+            <div id="toolbar" class="ui-widget-header">
+                <button id="options-button">Happy Shapes</button>
+                <span id="shapes-div">
+                    <input type="checkbox" checked="checked" id="shape-0"><label for="shape-0">Circle</label>
+                    <input type="checkbox" checked="checked" id="shape-2"><label for="shape-2">Square</label>
+                    <input type="checkbox" checked="checked" id="shape-4"><label for="shape-4">Rectangle</label>                
+                    <input type="checkbox" checked="checked" id="shape-3"><label for="shape-3">Triangle</label>
+                    <input type="checkbox" checked="checked" id="shape-6"><label for="shape-6">Hexagon</label>
+                    <input type="checkbox" checked="checked" id="shape-8"><label for="shape-8">Octagon</label>                        
+                </span>
+                <span title="Change background color" class="cpicker" id="bg-picker">&nbsp;</span> 
 
 
-			</div>
-			<div id="feedback-form" title="Your feedback">
-				<form>
+                <label for="objects-spinner">Number of Objects:</label>
+                <input class="numeric-input" id="objects-spinner" name="objects-spinner" value="100">
+                <button id="go-button" title="Go with current settings" onclick="showtime(1);">Go!</button>                    
+                <button id="stop-button" style="display: none" onclick="showtime();">Stop!</button>                
+                <span id="progress-span"></span>        
+                <button id="surprise-button" title="Surprise me with random settings!"  onclick="surpriseMe();">Surprise me!</button>
+                <button id="clear-button" onclick="clearCanvas();">Clear</button>  
+                <span>
+                    <button id="download-button" title="Save to your computer">Download</button>
+                    <button id="download-options">Select file type</button>
+                </span>
+                <ul>
+                    <li><a href="#" id="download-png" onclick="savePNG();">PNG</a></li>
+                    <li><a href="#" id="download-svg"  onclick="saveSVG();">SVG</a></li>
+                </ul>
+                 
 
-					<fieldset>
-						<div>
-							<label for="feedback-name">Name</label><br /> <input type="text" name="name" id="feedback-name" class="text ui-widget-content ui-corner-all">
-						</div>
-						<div>
-							<label for="feedback-email">Email</label><br /> <input type="text" name="email" id="feedback-email" value=""
-								class="text ui-widget-content ui-corner-all">
-						</div>
-						<div>
-							<label for="feedback-comment">Comment</label><br />
-							<textarea name="text" cols="50" id="feedback-comment" class="text ui-widget-content ui-corner-all"></textarea>
-						</div>
-					</fieldset>
-					<fieldset>
-						Happy Shapes on <a target="_blank" href="https://plus.google.com/112500451712162104420" rel="publisher">Google+</a>
-					</fieldset>
-				</form>
-			</div>
-			<div id="options-dialog" title="Options">
-				<p>Canvas</p>
-				<fieldset>
-					<div class="option-row">
-						<span> Canvas width: </span> <input class="numeric-input" id="canvas-width-input" name="canvas-width-input" value="100"> <span>
-							Canvas height </span> <input class="numeric-input" id="canvas-height-input" name="canvas-height-input" value="100">
-					</div>
-				</fieldset>
-				<p>Shapes</p>
-				<fieldset>
-					<table>
-						<tr>
-							<td colspan="2"><span class="option-label" id="size-label"> Size </span></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="size-slider"></div>
-							</td>
-						</tr>
-						<tr>
-							<td><span id="rotate-label"> Rotate </span></td>
-							<td><span id="rotate-radio"> <input type="radio" id="rotate-random" value="random" name="radio" checked="checked"><label
-									for="rotate-random">random</label> <input type="radio" id="rotate-always" value="always" name="radio"><label for="rotate-always">always</label>
-									<input type="radio" id="rotate-never" value="never" name="radio"><label for="rotate-never">never</label>
-							</span></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="rotate-slider"></div>
-							</td>
-						</tr>
-						<tr>
-							<td><span id="fill-label"> Fill </span></td>
-							<td><span id="fill-radio"> <input type="radio" id="fill-random" value="random" name="radio1" checked="checked"><label
-									for="fill-random">random</label> <input type="radio" id="fill-always" value="always" name="radio1"><label for="fill-always">always</label>
-									<input type="radio" id="fill-never" value="never" name="radio1"><label for="fill-never">never</label>
-							</span></td>
-						</tr>
-						<tr>
-							<td><span id="Stroke-label"> Stroke </span></td>
-							<td><span id="stroke-radio"> <input type="radio" id="stroke-random" value="random" name="radio2" checked="checked"><label
-									for="stroke-random">random</label> <input type="radio" id="stroke-always" value="always" name="radio2"><label for="stroke-always">always</label>
-									<input type="radio" id="stroke-never" value="never" name="radio2"><label for="stroke-never">never</label>
-							</span></td>
-						</tr>
-						<tr>
-							<td><span id="shadow-label"> Shadow </span></td>
-							<td><span id="shadow-radio"> <input type="radio" id="shadow-random" value="random" name="radio3" checked="checked"><label
-									for="shadow-random">random</label> <input type="radio" id="shadow-always" value="always" name="radio3"><label for="shadow-always">always</label>
-									<input type="radio" id="shadow-never" value="never" name="radio3"><label for="shadow-never">never</label>
-							</span></td>
-						</tr>
-
-						<tr>
-							<td colspan="2"><span class="option-label" id="opacity-label"> opacity </span></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="opacity-slider"></div>
-							</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" id="color-range-button"><label for="color-range-button">Color range</label></td>
-							<td><span title="Select first color" class="cpicker color-range-disabled" id="color1-picker">first color</span> <span
-								title="Select second color" class="cpicker color-range-disabled" id="color2-picker">second color</span></td>
-						</tr>
+                <button id="chrome-button" title="Tested on google chrome!" onclick="window.open('https://www.google.com/intl/en/chrome/browser/', '_blank');">Chrome</button>                    
+                <button id="google-plus-button" onclick="window.open('https://plus.google.com/112500451712162104420', '_blank');">Happy Shapes on Google+</button>
+                <button id="feedback-button">Feedback</button>
 
 
-					</table>
-					<div class="option-row"></div>
-					<div class="option-row"></div>
+                <div id="feedback-form" title="Your feedback">
+                    <form>
 
-					<div class="option-row"></div>
+                        <fieldset>
+                            <div>
+                                <label for="feedback-name">Name</label><br/>
+                                <input type="text" name="name" id="feedback-name" class="text ui-widget-content ui-corner-all">
+                            </div>
+                            <div>
+                                <label for="feedback-email">Email</label><br/>
+                                <input type="text" name="email" id="feedback-email" value="" class="text ui-widget-content ui-corner-all">
+                            </div>
+                            <div>
+                                <label for="feedback-comment">Comment</label><br/>
+                                <textarea name="text" cols="30" id="feedback-comment"  class="text ui-widget-content ui-corner-all"></textarea>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            Happy Shapes on <a target="_blank" href="https://plus.google.com/112500451712162104420" rel="publisher">Google+</a>
+                        </fieldset>
+                    </form>
+                </div>
+                <div id="options-dialog" title="Options">
+                    <p>Canvas</p>
+                    <fieldset>
+                        <div class="option-row">
+                            <span>
+                                Canvas width: 
+                            </span>
+                            <input class="numeric-input" id="canvas-width-input" name="canvas-width-input" value="100">
+                            <span>
+                                Canvas height 
+                            </span>
+                            <input class="numeric-input" id="canvas-height-input" name="canvas-height-input" value="100">
+                        </div>   
+                    </fieldset>
+                    <p>Shapes</p>
+                    <fieldset>
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <span  class="option-label" id="size-label">
+                                        Size
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="size-slider"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span id="rotate-label">
+                                        Rotate
+                                    </span>
+                                </td>
+                                <td>
+                                    <span id="rotate-radio">
+                                        <input type="radio" id="rotate-random" value="random" name="radio" checked="checked"><label for="rotate-random">random</label>
+                                        <input type="radio" id="rotate-always" value="always" name="radio"><label for="rotate-always">always</label>
+                                        <input type="radio" id="rotate-never" value="never" name="radio"><label for="rotate-never">never</label>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="rotate-slider"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span id="fill-label">
+                                        Fill
+                                    </span>
+                                </td>
+                                <td>
+                                    <span id="fill-radio">
+                                        <input type="radio" id="fill-random" value="random" name="radio1" checked="checked"><label for="fill-random">random</label>
+                                        <input type="radio" id="fill-always" value="always" name="radio1"><label for="fill-always">always</label>
+                                        <input type="radio" id="fill-never" value="never" name="radio1"><label for="fill-never">never</label>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span id="Stroke-label">
+                                        Stroke
+                                    </span>
+                                </td>
+                                <td>
+                                    <span id="stroke-radio">
+                                        <input type="radio" id="stroke-random" value="random" name="radio2" checked="checked"><label for="stroke-random">random</label>
+                                        <input type="radio" id="stroke-always" value="always" name="radio2"><label for="stroke-always">always</label>
+                                        <input type="radio" id="stroke-never" value="never" name="radio2"><label for="stroke-never">never</label>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span id="shadow-label">
+                                        Shadow
+                                    </span>
+                                </td>
+                                <td>
+                                    <span id="shadow-radio">
+                                        <input type="radio" id="shadow-random" value="random" name="radio3" checked="checked"><label for="shadow-random">random</label>
+                                        <input type="radio" id="shadow-always" value="always" name="radio3"><label for="shadow-always">always</label>
+                                        <input type="radio" id="shadow-never" value="never" name="radio3"><label for="shadow-never">never</label>
+                                    </span>
+                                </td>
+                            </tr>
 
-				</fieldset>
+                            <tr>
+                                <td colspan="2">
+                                    <span  class="option-label" id="opacity-label">
+                                        opacity
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="opacity-slider"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="color-range-button"><label for="color-range-button">Color range</label>
+                                </td>
+                                <td>
+                                    <span title="Select first color" class="cpicker color-range-disabled" id="color1-picker">first color</span> 
+                                    <span title="Select second color" class="cpicker color-range-disabled" id="color2-picker">second color</span> 
+                                </td>
+                            </tr>
 
-			</div>
 
-		</div>
+                        </table> 
 
-		<div id="canvas-div">
-			<canvas width="1200" height="500" id="shapes-canvas"></canvas>
-		</div>
+                    </fieldset>
 
-		<div id="hidden-div" style="display: none">
-			<textarea id="log-view" rows="10" cols="100"></textarea>
-		</div>
-	</div>
-</body>
+                </div>
+
+            </div>
+
+            <div id="canvas-div">
+                <canvas id="shapes-canvas"></canvas>
+            </div>
+
+            <div id="hidden-div" style="display:none">
+                <textarea id="log-view" rows="10" cols="100"></textarea>
+            </div>
+        </div>
+    </body>
+
 </html>
