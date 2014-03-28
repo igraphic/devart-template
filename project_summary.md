@@ -28,7 +28,7 @@ http://www.youtube.com/watch?v=U6PoUg7jXsA
 I tried to do this, but it was a little bit hard for me to focus and imagining weird story every time I want to remember something. Then I thought that a software program can do this. I was thinking of a software that can take a list of words or numbers and  write a scenario, based on a predefined objects. After that the software will show pictures, or animation to tell the story for the user.
 
 ![Chart](project_images/chart01.png?raw=true "Chart")
-
+ 
 The objects should have flexible parameters, and behaviour, to act in different situations, and that will help to achieve the target of making a weird story.
 
 **Example**
