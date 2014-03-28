@@ -54,7 +54,7 @@ and open the template in the editor.
                     <li><a href="#" id="download-png" onclick="savePNG();">PNG</a></li>
                     <li><a href="#" id="download-svg"  onclick="saveSVG();">SVG</a></li>
                 </ul>
-                 
+
 
                 <button id="chrome-button" title="Tested on google chrome!" onclick="window.open('https://www.google.com/intl/en/chrome/browser/', '_blank');">Chrome</button>                    
                 <button id="google-plus-button" onclick="window.open('https://plus.google.com/112500451712162104420', '_blank');">Happy Shapes on Google+</button>
@@ -84,22 +84,25 @@ and open the template in the editor.
                     </form>
                 </div>
                 <div id="options-dialog" title="Options">
-                    <p>Canvas</p>
-                    <fieldset>
-                        <div class="option-row">
-                            <span>
-                                Canvas width: 
-                            </span>
-                            <input class="numeric-input" id="canvas-width-input" name="canvas-width-input" value="100">
-                            <span>
-                                Canvas height 
-                            </span>
-                            <input class="numeric-input" id="canvas-height-input" name="canvas-height-input" value="100">
-                        </div>   
-                    </fieldset>
-                    <p>Shapes</p>
                     <fieldset>
                         <table>
+                            <tr>
+                                <td>
+                                    <span>
+                                        Canvas size
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>
+                                        width: 
+                                    </span>
+                                    <input class="numeric-input" id="canvas-width-input" name="canvas-width-input" value="100">
+                                    <span>
+                                        height 
+                                    </span>
+                                    <input class="numeric-input" id="canvas-height-input" name="canvas-height-input" value="100">
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="2">
                                     <span  class="option-label" id="size-label">
@@ -188,11 +191,18 @@ and open the template in the editor.
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="color-range-button"><label for="color-range-button">Color range</label>
+                                    <input type="checkbox" id="use-palette-button"><label for="use-palette-button">Use palette</label>
                                 </td>
                                 <td>
-                                    <span title="Select first color" class="cpicker color-range-disabled" id="color1-picker">first color</span> 
-                                    <span title="Select second color" class="cpicker color-range-disabled" id="color2-picker">second color</span> 
+                                    <div onclick="" id="palette-container">
+                                        <ul style="display:none" id="color-menu">
+                                            <li><a id="lighten-color" href="#">Lighten</a></li>
+                                            <li><a id="darken-color" href="#">Darken</a></li>
+                                            <li><a id="analogous-colors" href="#">Analogous</a></li>
+                                            <li><a id="monochromatic-colors" href="#">Monochromatic</a></li>
+                                            <li><a id="delete-color" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
 
