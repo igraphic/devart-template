@@ -1,10 +1,10 @@
 {
     "technologies": {
         "apis": [
-            "insert apis"
+            "Google App Engine APIs"
         ],
         "platforms": [
-            "Google App Engine","Web"
+            "Google App Engine","Web","eclipse","NetBeans","Chrome"
         ],
         "toolkits": [
             "HTML5","Javascript","jquery","jquery ui","fabricjs", "JSON"
